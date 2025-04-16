@@ -52,3 +52,9 @@ class Snake:
             if self.body[0].distance(self.body[segment_num]) < 15:
                 return True
         return False
+
+    def reset(self):
+        for segment in self.body:
+            segment.goto(1000, 1000)
+        self.body.clear()
+        self.__init__()
