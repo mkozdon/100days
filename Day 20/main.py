@@ -37,10 +37,14 @@ while game_running:
         or snake.body[0].ycor() > 280
         or snake.body[0].ycor() < -280
     ):
-        scoreboard.game_over()
-        game_running = False
+        scoreboard.reset()
+        snake.reset()
+        # scoreboard.game_over()
+        # game_running = False
 
     if snake.is_self_collision():
-        scoreboard.game_over()
-        game_running = False
+        # scoreboard.game_over()
+        # game_running = False
+        scoreboard.reset()
+        snake.reset()
 screen.exitonclick()
