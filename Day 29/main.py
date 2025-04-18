@@ -1,9 +1,10 @@
 import tkinter as tk
 import tkinter.messagebox as mb
 import random
+import json
 
 IMG_PATH = "Day 29\logo.png"
-STORAGE_PATH = "Day 29/data.txt"
+STORAGE_PATH = "Day 29/data.json"
 LETTERS = 8
 SYMBOLS = 3
 NUMBERS = 2
@@ -36,15 +37,22 @@ def save_pwd():
     website = website_entry.get()
     username = username_entry.get()
     password = pwd_entry.get()
+    new_data = {website: {"username": username, "password": password}}
     if len(website) == 0 or len(username) == 0 or len(password) == 0:
         mb.showwarning(title="Warning", message="Empty fields are not allowed.")
         return
     if mb.askyesno(
         "Save Prompt", f"Save below logon data?\n{website}\n{username}\n{password}"
     ):
-        with open(STORAGE_PATH, "a") as output:
-            output.write(" | ".join([website, username, password]))
-            output.write("\n")
+        try:
+            with open(STORAGE_PATH, "r") as output:
+                data = json.load(output)
+                data.update(new_data)
+        except FileNotFoundError:
+            data = new_data
+        with open(STORAGE_PATH, "w") as output:
+            json.dump(data, output, indent=4)
+
         pwd_entry.delete(0, "end")
         username_entry.delete(0, "end")
         website_entry.delete(0, "end")
