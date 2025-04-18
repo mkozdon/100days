@@ -60,13 +60,17 @@ def save_pwd():
 
 def search():
     website = website_entry.get()
-    with open(STORAGE_PATH, "r") as data_file:
-        data = json.load(data_file)
-    if website in data:
-        message = f"Email: {data[website]['username']} \nPassword: {data[website]['password']}"
+    try:
+        with open(STORAGE_PATH, "r") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        mb.showwarning(title="Error", message="Data File Not Found")
     else:
-        message = f"Data for {website} not found."
-    mb.showwarning(title=website, message=message)
+        if website in data:
+            message = f"Email: {data[website]['username']} \nPassword: {data[website]['password']}"
+        else:
+            message = f"Data for {website} not found."
+        mb.showwarning(title=website, message=message)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
